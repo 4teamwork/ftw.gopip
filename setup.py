@@ -46,6 +46,7 @@ setup(
     install_requires=[
         'Plone',
         'ftw.profilehook',
+        'plone.api',
         'setuptools',
     ],
 
