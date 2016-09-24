@@ -44,8 +44,9 @@ setup(
     zip_safe=False,
 
     install_requires=[
-        'setuptools',
         'Plone',
+        'ftw.profilehook',
+        'setuptools',
     ],
 
     tests_require=tests_require,
