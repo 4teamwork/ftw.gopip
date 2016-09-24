@@ -18,14 +18,6 @@ index storing the order in the catalog.
 The index updates itself by registering proxies for the ``IOrdering`` adapters and
 updating the index value when needed.
 
-Solr / collective.indexing
---------------------------
-
-The here used approach is expected to **not** work with ``collective.indexing``
-and solr, because it directly interacts with the catalog index.
-As we did not use the ``getObjPositionInParent`` in solr in praxis,
-we are not yet planning to improve ``collective.indexing`` support.
-
 
 Compatibility
 -------------
@@ -45,11 +37,8 @@ Installation
         ...
         ftw.gopip
 
+- Install the generic setup profile ``ftw.gopip:default``.
 
-Usage
-=====
-
-### USAGE ###
 
 Development
 ===========
