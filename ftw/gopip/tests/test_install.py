@@ -52,6 +52,7 @@ class TestInstallAndUninstallRoundtrip(TestCase):
         create(Builder('folder').titled('three'))
         self.portal.moveObjectsByDelta(['one', 'two', 'three'],
                                        -len(self.portal.objectIds()))
+        self.portal.plone_utils.reindexOnReorder(self.portal)
 
         create(Builder('folder').titled('b1').within(one))
         create(Builder('folder').titled('c1').within(one))

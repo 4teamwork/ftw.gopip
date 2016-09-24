@@ -34,4 +34,10 @@
         handler=".hooks.uninstalled"
         />
 
+    <subscriber
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot
+             Products.CMFPlone.interfaces.IReorderedEvent"
+        handler=".subscribers.root_page_order_changed"
+        />
+
 </configure>

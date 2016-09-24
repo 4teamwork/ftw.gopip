@@ -18,6 +18,7 @@ class TestOrdering(FunctionalTestCase):
         self.assert_order('two', 'three', 'one')
         self.portal.moveObjectsByDelta(['one', 'two', 'three'],
                                        -len(self.portal.objectIds()))
+        self.portal.plone_utils.reindexOnReorder(self.portal)
         self.assert_order('one', 'two', 'three')
 
     def test_folder_reorder_with_method(self):
