@@ -5,7 +5,9 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix an issue when using ftw.gopip in combination with versions from
+  Products.CMFEditions.
+  [elioschmutz]
 
 
 1.0.0 (2016-09-26)

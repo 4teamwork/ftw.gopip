@@ -1,3 +1,4 @@
+from Acquisition import aq_base
 from functools import partial
 from plone import api
 from plone.folder.default import DefaultOrdering
@@ -51,8 +52,20 @@ class KeepIndexInSync(object):
 
     def ensure_children_position_updated_in_index(self):
         catalog = api.portal.get_tool('portal_catalog')
+
+        # Fix an issue when using ftw.gopip in combination with versions from
+        # Products.CMFEditions.
+        #
+        # In some cases we get an ImplicitAcquisitionWrapper-object as
+        # the context which will cause errors when accessing
+        # object-methods. To fix the issue, we have to get the real
+        # content object.
+        #
+        # Warning: this case is not testet!
+        context = aq_base(self.context)
+
         index = catalog._catalog.getIndex('getObjPositionInParent')
-        path = '/'.join(self.context.getPhysicalPath())
+        path = '/'.join(context.getPhysicalPath())
         child_ids_to_index = []
 
         for position, child_id in enumerate(self.idsInOrder()):
@@ -68,7 +81,7 @@ class KeepIndexInSync(object):
                 child_ids_to_index.append(child_id)
 
         for child_id in child_ids_to_index:
-            child_object = self.context[child_id]
+            child_object = context[child_id]
             catalog.reindexObject(child_object,
                                   idxs=['getObjPositionInParent'],
                                   update_metadata=False)
