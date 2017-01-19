@@ -51,8 +51,29 @@ class KeepIndexInSync(object):
 
     def ensure_children_position_updated_in_index(self):
         catalog = api.portal.get_tool('portal_catalog')
+
+        try:
+            path = '/'.join(self.context.getPhysicalPath())
+        except AttributeError:
+            # Fix an issue when using ftw.gopip in combination with versions
+            # from Products.CMFEditions.
+            #
+            # Retrieve an old version will replace and remove current object
+            # attributes which will fire the ordering event. In this case we
+            # get an acquisition wrapped object whos parent is an
+            # ObjectManagerStorageAdapter from CMFEditions.
+            #
+            # Accessing acquisition-methods on the object like getPhysicalPath
+            # will cause an error because its parent, the
+            # ObjectManagerStorageAdapter, has no such method.
+            #
+            # Unfortuately there is no other way to check if the object is
+            # such a wrapped object or not.
+            #
+            # Warning: this case is not testet!
+            return
+
         index = catalog._catalog.getIndex('getObjPositionInParent')
-        path = '/'.join(self.context.getPhysicalPath())
         child_ids_to_index = []
 
         for position, child_id in enumerate(self.idsInOrder()):
