@@ -3,6 +3,7 @@ from ftw.builder import create
 from ftw.builder.testing import BUILDER_LAYER
 from ftw.builder.testing import functional_session_factory
 from ftw.builder.testing import set_builder_session_factory
+from ftw.gopip.testing import IS_PLONE_5_OR_GREATER
 from operator import attrgetter
 from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
@@ -31,6 +32,10 @@ class PloneWithBuilder(PloneSandboxLayer):
 
         z2.installProduct(app, 'ftw.gopip')
 
+    def setUpPloneSite(self, portal):
+        if IS_PLONE_5_OR_GREATER:
+            applyProfile(portal, 'plone.app.contenttypes:default')
+
 
 PLONE_WITH_BUILDER_FIXTURE = PloneWithBuilder()
 PLONE_WITH_BUILDER_FUNCTIONAL = FunctionalTesting(
@@ -47,16 +52,16 @@ class TestInstallAndUninstallRoundtrip(TestCase):
         self.portal = self.layer['portal']
         self.grant('Manager')
 
-        create(Builder('folder').titled('two'))
-        one = create(Builder('folder').titled('One'))
-        create(Builder('folder').titled('three'))
+        create(Builder('folder').titled(u'two'))
+        one = create(Builder('folder').titled(u'One'))
+        create(Builder('folder').titled(u'three'))
         self.portal.moveObjectsByDelta(['one', 'two', 'three'],
                                        -len(self.portal.objectIds()))
         self.portal.plone_utils.reindexOnReorder(self.portal)
 
-        create(Builder('folder').titled('b1').within(one))
-        create(Builder('folder').titled('c1').within(one))
-        create(Builder('folder').titled('a1').within(one))
+        create(Builder('folder').titled(u'b1').within(one))
+        create(Builder('folder').titled(u'c1').within(one))
+        create(Builder('folder').titled(u'a1').within(one))
         one.moveObjectsByDelta(['a1', 'b1', 'c1'],
                                -len(one.objectIds()))
 
